@@ -1,7 +1,13 @@
 M2 IG 2025
+
 274H-TOL RAMAMINIRINA Victorino
+
 273H-TOL RAMAMBASOA Rindralalaina Francine
+
 270H-TOL RAKOTOARIMANANA Hezaka 
+
 259H-TOL FIDELICI Rapizany
+
 267H-TOL ONJASOA Ornella Léonardine
+
 252H-TOL ASINDRAMINO Sharon Constancia
