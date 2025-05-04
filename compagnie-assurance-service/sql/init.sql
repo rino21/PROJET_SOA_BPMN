@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS Compagnie_assurance (
+    id VARCHAR(255) PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    email VARCHAR(255)
+);

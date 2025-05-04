@@ -1,0 +1,87 @@
+version: "3.8"
+
+services:
+  employe-service:
+    build: ./employe-service
+    ports:
+      - "4001:4001"
+    depends_on:
+      - employe-db
+    environment:
+      DB_HOST: employe-db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: employe_db
+    
+  employe-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: employe_db
+    volumes:
+      - ./employe-service/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+
+  conseil-rh-service:
+    build: ./conseil-rh-service
+    ports:
+      - "4002:4002"
+    depends_on:
+      - conseil-db
+    environment:
+      DB_HOST: conseil-db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: conseil_rh_db
+      CLIENT_ID: CLIENT_ID
+      CLIENT_SECRET: SECRET
+      REDIRECT_URI: https://developers.google.com/oauthplayground
+      REFRESH_TOKEN: REFRESH_TOKEN
+
+  conseil-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: conseil_rh_db
+    volumes:
+      - ./conseil-rh-service/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3308:3306"
+
+  compagnie-assurance-service:
+    build: ./compagnie-assurance-service
+    ports:
+      - "4003:4003"
+    depends_on:
+      - compagnie-db
+    environment:
+      DB_HOST: compagnie-db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: compagnie_db
+  
+  compagnie-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: compagnie_db
+    volumes:
+      - ./compagnie-assurance-service/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3309:3306"
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - employe-service
+      - conseil-rh-service
+      - compagnie-assurance-service
+    environment:
+      PORT: 4000
+      EMPLOYE_SERVICE_URL: http://employe-service:4001/graphql
+      CONSEIL_SERVICE_URL: http://conseil-rh-service:4002/graphql
+      COMPAGNIE_SERVICE_URL: http://compagnie-assurance-service:4003/graphql
+
